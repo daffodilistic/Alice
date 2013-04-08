@@ -28,8 +28,8 @@ class ExponentialFogProxy extends FogProxy {
     
 	public void setup( RenderContext context ) {
         super.setup( context );
-        context.gl.glFogi( javax.media.opengl.GL.GL_FOG_MODE, javax.media.opengl.GL.GL_EXP );
-        context.gl.glFogf( javax.media.opengl.GL.GL_FOG_DENSITY, m_density );
+        context.gl.getGL2().glFogi( javax.media.opengl.GL2.GL_FOG_MODE, javax.media.opengl.GL2.GL_EXP );
+        context.gl.getGL2().glFogf( javax.media.opengl.GL2.GL_FOG_DENSITY, m_density );
     }
 	
 	protected void changed( edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value ) {

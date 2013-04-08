@@ -24,7 +24,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool;
 
 import java.awt.Dimension;
-import java.awt.Font;
+//import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -73,6 +73,8 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 	private javax.swing.JFileChooser saveWorldFileChooser;
 	private javax.swing.JFileChooser saveCharacterFileDialog; //java.awt.FileDialog
 
+	private javax.swing.JFileChooser chooserTest;
+	
 	private edu.cmu.cs.stage3.alice.authoringtool.dialog.LoadElementProgressPane worldLoadProgressPane;
 	private edu.cmu.cs.stage3.alice.authoringtool.dialog.StoreElementProgressPane worldStoreProgressPane;
 	private edu.cmu.cs.stage3.alice.authoringtool.dialog.LoadElementProgressPane characterLoadProgressPane;
@@ -330,11 +332,17 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 	public AuthoringTool(java.io.File defaultWorld, java.io.File worldToLoad, boolean stdOutToConsole, boolean stdErrToConsole) {
 		String font = "SansSerif"; // "Tahoma";
 		try {
-			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 
 			//			javax.swing.UIManager.put( "Button.focus", new java.awt.Color( 255, 255, 255, 0 ) ); // don't show focus  // makes printing slow, unfortunately
-
+			
+			//javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			
 			class CustomButtonBorder extends javax.swing.border.AbstractBorder implements javax.swing.plaf.UIResource {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 3455651414378617637L;
 				protected java.awt.Insets insets = new java.awt.Insets(3, 3, 3, 3);
 				protected javax.swing.border.Border line = javax.swing.BorderFactory.createLineBorder(java.awt.Color.black, 1);
 				protected javax.swing.border.Border spacer = javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4);
@@ -364,22 +372,22 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 					return insets;
 				}
 			}
-			javax.swing.UIManager.put("Button.border", new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource(new CustomButtonBorder(), new javax.swing.plaf.basic.BasicBorders.MarginBorder()));
+			//javax.swing.UIManager.put("Button.border", new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource(new CustomButtonBorder(), new javax.swing.plaf.basic.BasicBorders.MarginBorder()));
 
 			//necessary for 1.4
 	
-			javax.swing.UIManager.put("Label.font", new java.awt.Font(font, java.awt.Font.BOLD, 12));
-			javax.swing.UIManager.put("Label.foreground", edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("mainFontColor"));
-			javax.swing.UIManager.put("TabbedPane.selected", new java.awt.Color(255, 255, 255, 0));
-			javax.swing.UIManager.put("TabbedPane.tabInsets", new java.awt.Insets(1, 4, 1, 3));
+			//javax.swing.UIManager.put("Label.font", new java.awt.Font(font, java.awt.Font.BOLD, 12));
+			//javax.swing.UIManager.put("Label.foreground", edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("mainFontColor"));
+			//javax.swing.UIManager.put("TabbedPane.selected", new java.awt.Color(255, 255, 255, 0));
+			//javax.swing.UIManager.put("TabbedPane.tabInsets", new java.awt.Insets(1, 4, 1, 3));
 
 			if ((System.getProperty("os.name") != null) && System.getProperty("os.name").startsWith("Windows")) {
-				javax.swing.UIManager.put("FileChooserUI", "com.sun.java.swing.plaf.windows.WindowsFileChooserUI");
+				//javax.swing.UIManager.put("FileChooserUI", "com.sun.java.swing.plaf.windows.WindowsFileChooserUI");
 			}
 		} catch (Exception e) {
 			showErrorDialog("Error configuring Look and Feel.", e);
 		}
-
+		
 		AuthoringTool.hack = this;
 		this.defaultWorld = defaultWorld;
 		if (!(defaultWorld.exists() && defaultWorld.canRead())) {
@@ -392,7 +400,7 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 		try{
 			AikMin.setFontSize(Integer.parseInt( authoringToolConfig.getValue( "fontSize" )));		
 			if (authoringToolConfig.getValue( "enableHighContrastMode" ).equalsIgnoreCase("true")){
-				javax.swing.UIManager.put("Label.foreground", java.awt.Color.black);
+				//javax.swing.UIManager.put("Label.foreground", java.awt.Color.black);
 			}
 		} catch (Exception e){}
 		mainInit();
@@ -400,7 +408,7 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 		this.stdErrToConsole = stdErrToConsole;
 		initializeOutput(stdOutToConsole, stdErrToConsole);
 		pyInit();
-		//AikMin.setFontSize(12);		
+		//AikMin.setFontSize(12);
 		dialogInit();
 		//AikMin.setFontSize(Integer.parseInt( authoringToolConfig.getValue( "fontSize" )));		
 		undoRedoInit();
@@ -540,7 +548,12 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 
 	private void dialogInit() {
 		importFileChooser = new javax.swing.JFileChooser();
+		addCharacterFileChooser = new javax.swing.JFileChooser();
+		saveCharacterFileDialog = new javax.swing.JFileChooser();
+		
 		saveWorldFileChooser = new javax.swing.JFileChooser() {
+
+			@Override
 			public void approveSelection() {
 				java.io.File desiredFile = getSelectedFile();
 				if (currentWorldLocation == null || currentWorldLocation.equals(desiredFile) || !desiredFile.exists()) {
@@ -562,8 +575,6 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 				}
 			}
 		};
-		addCharacterFileChooser = new javax.swing.JFileChooser();
-		saveCharacterFileDialog = new javax.swing.JFileChooser();
 		
 		browseFileChooser = new javax.swing.JFileChooser();
 		//		browseFileChooser.setApproveButtonText( "Set Directory" );
@@ -3071,6 +3082,11 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner, edu.
 		if (result == edu.cmu.cs.stage3.swing.ContentPane.OK_OPTION) {
 			final java.io.File fileToExportTo = exportCodeForPrintingContentPane.getFileToExportTo();
 			edu.cmu.cs.stage3.progress.ProgressPane progressPane = new edu.cmu.cs.stage3.progress.ProgressPane( "Saving HTML...", "Saving: " ) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 840287082339530378L;
+
 				protected void construct() throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 					try {
 						StringBuffer htmlOutput = new StringBuffer();

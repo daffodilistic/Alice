@@ -24,7 +24,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 public class OffscreenRenderTarget extends RenderTarget implements edu.cmu.cs.stage3.alice.scenegraph.renderer.OffscreenRenderTarget {
-    private javax.media.opengl.GLJPanel m_glJPanel;
+    private javax.media.opengl.awt.GLJPanel m_glJPanel;
 	OffscreenRenderTarget( Renderer renderer ) {
 		super( renderer );
 //		javax.media.opengl.GLCapabilities glCaps = new javax.media.opengl.GLCapabilities();

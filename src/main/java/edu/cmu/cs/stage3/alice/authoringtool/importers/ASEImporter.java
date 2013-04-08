@@ -23,17 +23,20 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.importers;
 
+import edu.cmu.cs.stage3.alice.core.Model;
+import edu.cmu.cs.stage3.alice.core.Transformable;
+
 /**
  * @author Jason Pratt
  */
 public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractImporter {
 	protected java.io.StreamTokenizer tokenizer;
-	protected java.util.HashMap modelsToParentStrings;
-	protected java.util.HashMap namesToModels;
-	protected java.util.HashMap namesToMaterials;
-	protected java.util.HashMap modelsToMaterialIndices;
-	protected java.util.HashMap modelsToKeyframeAnims;
-	protected java.util.ArrayList models;
+	protected java.util.HashMap<Model, String> modelsToParentStrings;
+	protected java.util.HashMap<String, Transformable> namesToModels;
+	protected java.util.HashMap<String, Material> namesToMaterials;
+	protected java.util.HashMap<Model, Integer> modelsToMaterialIndices;
+	protected java.util.HashMap<Model, java.util.ArrayList> modelsToKeyframeAnims;
+	protected java.util.ArrayList<Model> models;
 	protected Material[] materials = null;
 
 	protected int firstFrame;
@@ -69,8 +72,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	public java.util.Map getExtensionMap() {
-		java.util.HashMap map = new java.util.HashMap();
+	public java.util.Map<String, String> getExtensionMap() {
+		java.util.HashMap<String, String> map = new java.util.HashMap<String, String>();
 		map.put( "ASE", "3D Studio ascii export" );
 		return map;
 	}
@@ -87,12 +90,12 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		tokenizer.wordChars( '_', '_' );
 		tokenizer.wordChars( ':', ':' );
 
-		modelsToParentStrings = new java.util.HashMap();
-		namesToModels = new java.util.HashMap();
-		namesToMaterials = new java.util.HashMap();
-		modelsToMaterialIndices = new java.util.HashMap();
-		modelsToKeyframeAnims = new java.util.HashMap();
-		models = new java.util.ArrayList();
+		modelsToParentStrings = new java.util.HashMap<Model,String>();
+		namesToModels = new java.util.HashMap<String, Transformable>();
+		namesToMaterials = new java.util.HashMap<String, Material>();
+		modelsToMaterialIndices = new java.util.HashMap<Model, Integer>();
+		modelsToKeyframeAnims = new java.util.HashMap<Model, java.util.ArrayList>();
+		models = new java.util.ArrayList<Model>();
 
 		//optionsDialog.show();
 
@@ -133,8 +136,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 		edu.cmu.cs.stage3.alice.core.Element element = null;
 		try {
-			java.util.ArrayList rootModels = new java.util.ArrayList();
-			for( java.util.Iterator iter = models.iterator(); iter.hasNext(); ) {
+			java.util.ArrayList<Transformable> rootModels = new java.util.ArrayList<Transformable>();
+			for( java.util.Iterator<Model> iter = models.iterator(); iter.hasNext(); ) {
 				edu.cmu.cs.stage3.alice.core.Transformable model = (edu.cmu.cs.stage3.alice.core.Transformable)iter.next();
 				String parentString = (String)modelsToParentStrings.get( model );
 				if( parentString == null ) {
@@ -747,7 +750,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			if( (tokenizer.sval != null) && tokenizer.sval.equalsIgnoreCase( "*NODE_NAME" ) ) {
 				helper.name.set( parseString() );
-				namesToModels.put( helper.name.getValue(), helper );
+				namesToModels.put( helper.name.getStringValue(), helper );
 				currentObject = (String)helper.name.getValue();
 			} else if( (tokenizer.sval != null) && tokenizer.sval.equalsIgnoreCase( "*NODE_PARENT" ) ) {
 				modelsToParentStrings.put( helper, parseString() );
@@ -785,7 +788,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			if( (tokenizer.sval != null) && tokenizer.sval.equalsIgnoreCase( "*NODE_NAME" ) ) {
 				model.name.set( parseString() );
-				namesToModels.put( model.name.getValue(), model );
+				namesToModels.put( model.name.getStringValue(), model );
 				currentObject = (String)model.name.getValue();
 			} else if( (tokenizer.sval != null) && tokenizer.sval.equalsIgnoreCase( "*NODE_PARENT" ) ) {
 				modelsToParentStrings.put( model, parseString() );

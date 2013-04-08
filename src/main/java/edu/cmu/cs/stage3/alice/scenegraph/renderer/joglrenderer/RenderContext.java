@@ -24,11 +24,13 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 class RenderContext extends Context {
     private RenderTarget m_renderTarget;
 
-    private int m_lastTime_nextLightID = GL.GL_LIGHT0;
+    private int m_lastTime_nextLightID = GL2.GL_LIGHT0;
     private int m_nextLightID;
     private boolean m_isFogEnabled;
     private boolean m_renderOpaque;
@@ -96,24 +98,24 @@ class RenderContext extends Context {
         m_ambient[ 1 ] = 0;
         m_ambient[ 2 ] = 0;
         m_ambient[ 3 ] = 1;
-        m_nextLightID = GL.GL_LIGHT0;
+        m_nextLightID = GL2.GL_LIGHT0;
         
         m_isFogEnabled = false;
 
         m_currTextureMapProxy = null;
     }
     public void endAffectorSetup() {
-        gl.glLightModelfv( javax.media.opengl.GL.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer );
+        gl.getGL2().glLightModelfv( javax.media.opengl.GL2.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer );
         for( int id=m_nextLightID; id<m_lastTime_nextLightID; id++ ) {
             gl.glDisable( id );
         }
-        gl.glEnable( GL.GL_LIGHTING );
+        gl.glEnable( GL2.GL_LIGHTING );
         if( m_isFogEnabled ) {
             //System.err.println( "fog on" );
-            gl.glEnable( GL.GL_FOG );
+            gl.glEnable( GL2.GL_FOG );
         } else {
             //System.err.println( "fog off" );
-            gl.glDisable( GL.GL_FOG );
+            gl.glDisable( GL2.GL_FOG );
         }
 
         //todo?
@@ -178,7 +180,7 @@ class RenderContext extends Context {
         return (Integer)m_displayListMap.get( geometryProxy );
     }
     public Integer generateDisplayListID( GeometryProxy geometryProxy ) {
-		Integer id = new Integer( gl.glGenLists( 1 ) );
+		Integer id = new Integer( gl.getGL2().glGenLists( 1 ) );
 		m_displayListMap.put( geometryProxy, id );
         return id;
     }
@@ -194,7 +196,7 @@ class RenderContext extends Context {
     public void forgetGeometryProxy( GeometryProxy geometryProxy, boolean removeFromMap ) {
         Integer value = (Integer)m_displayListMap.get( geometryProxy );
         if( value != null ) {
-	        gl.glDeleteLists( value.intValue(), 1 );
+	        gl.getGL2().glDeleteLists( value.intValue(), 1 );
 	        if( removeFromMap ) {
 	            m_displayListMap.remove( geometryProxy );
 	        }
@@ -322,9 +324,9 @@ class RenderContext extends Context {
     public void setIsShadingEnabled( boolean isShadingEnabled ) {
         m_isShadingEnabled = isShadingEnabled;
         if( m_isShadingEnabled ) {
-            gl.glEnable( GL.GL_LIGHTING );
+            gl.glEnable( GL2.GL_LIGHTING );
         } else {
-            gl.glDisable( GL.GL_LIGHTING );
+            gl.glDisable( GL2.GL_LIGHTING );
         }
     }
     
@@ -335,17 +337,24 @@ class RenderContext extends Context {
     		
 	        double u = m_currTextureMapProxy.mapU( vertex.textureCoordinate0.x );
 	        double v = m_currTextureMapProxy.mapV( vertex.textureCoordinate0.y );
-			gl.glTexCoord2d( u, v );
+			gl.getGL2().glTexCoord2d( u, v );
 			
 	    }
     	    
     	if (vertex.diffuseColor!=null ){    
-    		gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);	
+    		gl.getGL2().glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);	
     	}	
             
  		if( m_isShadingEnabled ) {
- 			gl.glNormal3d( vertex.normal.x, vertex.normal.y, -vertex.normal.z );
+ 			gl.getGL2().glNormal3d( vertex.normal.x, vertex.normal.y, -vertex.normal.z );
         }	
-		gl.glVertex3d( vertex.position.x, vertex.position.y, -vertex.position.z );
+		gl.getGL2().glVertex3d( vertex.position.x, vertex.position.y, -vertex.position.z );
+	}
+
+
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

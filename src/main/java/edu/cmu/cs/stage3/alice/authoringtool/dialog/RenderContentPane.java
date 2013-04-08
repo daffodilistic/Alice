@@ -291,13 +291,14 @@ public class RenderContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		takePictureButton.setMargin(new java.awt.Insets(3, 2, 3, 2));
 		
 		speedSlider = new javax.swing.JSlider(0, 9, 0);
-
+		/*
 		speedSlider.setUI(new javax.swing.plaf.metal.MetalSliderUI() {
 			
 			public void paintTrack(java.awt.Graphics g) {
 				super.paintTrack(g);
 			}
 		});
+		*/
 		speedSlider.setPreferredSize(new java.awt.Dimension(100, 16));
 		speedSlider.setMinimumSize(new java.awt.Dimension(40, 16));
 		speedSlider.setMaximumSize(new java.awt.Dimension(100, 16));

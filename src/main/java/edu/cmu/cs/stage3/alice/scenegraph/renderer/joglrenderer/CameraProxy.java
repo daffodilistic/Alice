@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 abstract class CameraProxy extends ComponentProxy {
     private BackgroundProxy m_backgroundProxy = null;
@@ -79,12 +80,12 @@ abstract class CameraProxy extends ComponentProxy {
 	        }
             context.clear( backgroundProxy, actualViewport );
             sceneProxy.setup( context );
-		    context.gl.glMatrixMode( GL.GL_PROJECTION );
-		    context.gl.glLoadIdentity();
+		    context.gl.getGL2().glMatrixMode( GL2.GL_PROJECTION );
+		    context.gl.getGL2().glLoadIdentity();
 		    projection( context, actualViewport.width, actualViewport.height, m_near, m_far );
-		    context.gl.glMatrixMode( GL.GL_MODELVIEW );
-		    context.gl.glLoadIdentity();
-		    context.gl.glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
+		    context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
+		    context.gl.getGL2().glLoadIdentity();
+		    context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 		  
 		    
 		    //first color in opaque objects
@@ -110,9 +111,9 @@ abstract class CameraProxy extends ComponentProxy {
         	int width = context.getWidth();
         	int height = context.getHeight();
 		    projection( context, width, height, m_near, m_far );
-		    context.gl.glMatrixMode( GL.GL_MODELVIEW );
-		    context.gl.glLoadIdentity();
-		    context.gl.glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
+		    context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
+		    context.gl.getGL2().glLoadIdentity();
+		    context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 	        sceneProxy.pick( context, pickParameters );
 	    }
 	}

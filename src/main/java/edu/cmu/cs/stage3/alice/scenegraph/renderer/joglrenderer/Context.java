@@ -26,8 +26,8 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 abstract class Context implements javax.media.opengl.GLEventListener {
     public javax.media.opengl.GL gl;
     public javax.media.opengl.glu.GLU glu;
-	public com.sun.opengl.util.GLUT glut;
-    
+	public com.jogamp.opengl.util.gl2.GLUT glut;
+	
     protected int m_width;
     protected int m_height;
 
@@ -38,7 +38,7 @@ abstract class Context implements javax.media.opengl.GLEventListener {
     public void display( javax.media.opengl.GLAutoDrawable drawable ) {
         gl = drawable.getGL();
     	glu = new javax.media.opengl.glu.GLU();
-        glut = new com.sun.opengl.util.GLUT();
+        glut = new com.jogamp.opengl.util.gl2.GLUT();
     }
     public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
         //System.err.println( "reshape: " + drawable );

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
+import javax.media.opengl.GLAutoDrawable;
+
 class PickContext extends Context {
     private RenderTarget m_renderTarget;
 
@@ -81,6 +83,13 @@ class PickContext extends Context {
     }
 
 	protected void renderPickVertex( edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, -vertex.position.z );
+		gl.getGL2().glVertex3d( vertex.position.x, vertex.position.y, -vertex.position.z );
+	}
+
+
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

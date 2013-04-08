@@ -37,6 +37,6 @@ abstract class FogProxy extends AffectorProxy {
     
 	public void setup( RenderContext context ) {
         context.setIsFogEnabled( true );
-        context.gl.glFogfv( javax.media.opengl.GL.GL_FOG_COLOR, m_colorBuffer );
+        context.gl.getGL2().glFogfv( javax.media.opengl.GL2.GL_FOG_COLOR, m_colorBuffer );
     }
 }

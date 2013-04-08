@@ -29,9 +29,9 @@ class LinearFogProxy extends FogProxy {
     
 	public void setup( RenderContext context ) {
         super.setup( context );
-        context.gl.glFogi( javax.media.opengl.GL.GL_FOG_MODE, javax.media.opengl.GL.GL_LINEAR );
-        context.gl.glFogf( javax.media.opengl.GL.GL_FOG_START, m_near );
-        context.gl.glFogf( javax.media.opengl.GL.GL_FOG_END, m_far );
+        context.gl.getGL2().glFogi( javax.media.opengl.GL2.GL_FOG_MODE, javax.media.opengl.GL.GL_LINEAR );
+        context.gl.getGL2().glFogf( javax.media.opengl.GL2.GL_FOG_START, m_near );
+        context.gl.getGL2().glFogf( javax.media.opengl.GL2.GL_FOG_END, m_far );
     }
 	
 	protected void changed( edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value ) {
